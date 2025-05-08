@@ -2,11 +2,11 @@ require('dotenv').config();
 
 const express = require('express');
 const app = express();
-const port = process.env.DB_HOST;
+const port = process.env.APP_PORT;
 const usersRouter = require('./routes/users');
 
 app.get('/', (req, res) => {
-    res.send('App Node.js com PostgreSQL e Redis');
+    res.send('API Node.js + PostgreSQL e Redis');
 });
 
 app.use('/users', usersRouter);
