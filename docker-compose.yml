@@ -1,0 +1,55 @@
+services:
+  app:
+    container_name: app
+    image: node:22
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    networks:
+      - app-network
+    depends_on:
+      - db
+      - redis
+    tty: true
+    stdin_open: true
+    working_dir: /app
+    user: "${WWWUSER}:${WWWGROUP}"
+    restart: always
+
+
+  db:
+    container_name: db
+    image: postgres:17
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    restart: always
+
+  cache:
+    container_name: cache
+    image: redis:8
+    ports:
+      - "${CACHE_PORT}:${CACHE_PORT}"
+    networks:
+      - app-network
+    volumes:
+        - cache_data:/var/lib/redis
+    restart: always
+
+volumes:
+  db_data:
+    driver: local
+  cache_data:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge
