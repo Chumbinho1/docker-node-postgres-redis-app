@@ -1,6 +1,8 @@
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = process.env.DB_HOST;
 const usersRouter = require('./routes/users');
 
 app.get('/', (req, res) => {

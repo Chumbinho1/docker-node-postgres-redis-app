@@ -3,7 +3,7 @@ services:
     container_name: app
     image: node:22
     ports:
-      - "3000:3000"
+      - "${APP_PORT}:${APP_PORT}"
     volumes:
       - .:/app
     networks:

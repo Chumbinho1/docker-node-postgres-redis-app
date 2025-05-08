@@ -1,12 +1,13 @@
 {
   "name": "docker-node-postgres-app",
   "version": "1.0.0",
-  "description": "App Node.js with PostgreSQL Dockerized",
+  "description": "App Node.js with PostgreSQL and Redis Dockerized",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "migrate": "node-pg-migrate up",
-    "migrate-down": "node-pg-migrate down"
+    "migrate-down": "node-pg-migrate down",
+    "migrate-create": "node-pg-migrate create"
   },
   "dependencies": {
     "dotenv": "^16.5.0",
