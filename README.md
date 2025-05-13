@@ -49,10 +49,30 @@ This project was created as a learning exercise to study and improve my Docker s
     - PostgreSQL will be accessible on port `5432`
     - Redis will be accessible on port `6379`
 
+---
+
+## Running in Production
+
+1. Build and start the production containers:
+    ```bash
+    docker compose -f docker/production/docker-compose.production.yml --env-file .env.production up --build -d
+    ```
+
+2. Run database migrations:
+    ```bash
+    docker exec -it app npm run migrate
+    ```
+
+3. Access the application:
+    - The nginx server will be serving the Node.js application at `http://localhost`
+    - PostgreSQL will be accessible on port `5432`
+    - Redis will be accessible on port `6379`
+
 ## Purpose
 
-This project was built to practice:
+This project serves as a hands-on example to:
 
-- Setting up multi-container Docker environments.
-- Managing containerized applications with Docker Compose.
-- Integrating Node.js with PostgreSQL and Redis in a Dockerized setup.  
+- Create and manage multi-container Docker setups  
+- Orchestrate services using Docker Compose  
+- Connect a Node.js backend with PostgreSQL and Redis in containers  
+- Apply environment variables and production-ready Docker best practices

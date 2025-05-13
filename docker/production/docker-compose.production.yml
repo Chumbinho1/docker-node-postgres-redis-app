@@ -1,0 +1,65 @@
+services:
+  app:
+    container_name: app
+    build:
+      context: ../../
+      dockerfile: docker/production/Dockerfile
+    environment:
+      NODE_ENV: production
+    networks:
+      - app-network
+    depends_on:
+      - db
+    tty: true
+    stdin_open: true
+    user: "${WWWUSER}:${WWWGROUP}"
+    restart: always
+
+  server:
+    container_name: server
+    image: nginx:1.28-alpine
+    ports:
+      - "${SERVER_PORT}:SERVER_PORT"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - app-network
+    depends_on:
+      - app
+    restart: always
+
+  db:
+    container_name: db
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    restart: always
+
+  cache:
+    container_name: cache
+    image: redis:8-alpine
+    ports:
+      - "${CACHE_PORT}:${CACHE_PORT}"
+    networks:
+      - app-network
+    volumes:
+      - cache_data:/var/lib/redis
+    restart: always
+
+volumes:
+  db_data:
+    driver: local
+  cache_data:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge
